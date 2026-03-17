@@ -14,7 +14,6 @@ export async function PATCH(
   }
 
   const { title, content } = await request.json()
-  const id = params.id
 
   const { data, error } = await supabase
     .from('notes')
