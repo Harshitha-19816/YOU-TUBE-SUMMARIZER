@@ -41,8 +41,6 @@ export async function DELETE(
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
-  const id = params.id
-
   const { error } = await supabase
     .from('notes')
     .delete()
