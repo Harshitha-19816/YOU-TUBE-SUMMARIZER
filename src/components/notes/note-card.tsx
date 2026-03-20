@@ -25,42 +25,46 @@ export function NoteCard({ note, onEdit, onDelete }: NoteCardProps) {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, scale: 0.95 }}
-      whileHover={{ y: -4 }}
-      transition={{ duration: 0.2 }}
+      whileHover={{ y: -5 }}
+      transition={{ type: 'spring', mass: 1, stiffness: 120, damping: 20 }}
     >
-      <Card className="h-full bg-slate-900/40 border-slate-800 backdrop-blur-sm hover:border-indigo-500/50 hover:shadow-lg hover:shadow-indigo-500/10 transition-all group">
-        <CardHeader className="pb-3">
-          <CardTitle className="text-lg font-bold text-white group-hover:text-indigo-400 transition-colors line-clamp-1">
-            {note.title}
-          </CardTitle>
-          <p className="text-[10px] text-slate-500 font-mono">
-            {new Date(note.created_at).toLocaleDateString()}
-          </p>
-        </CardHeader>
-        <CardContent>
-          <p className="text-slate-400 text-sm line-clamp-4 leading-relaxed whitespace-pre-wrap">
-            {note.content}
-          </p>
-        </CardContent>
-        <CardFooter className="flex justify-end gap-2 pt-2">
-          <Button 
-            variant="ghost" 
-            size="icon" 
-            onClick={() => onEdit(note)}
-            className="h-8 w-8 text-slate-500 hover:text-white hover:bg-slate-800"
-          >
-            <Pencil className="h-4 w-4" />
-          </Button>
-          <Button 
-            variant="ghost" 
-            size="icon" 
-            onClick={() => onDelete(note.id)}
-            className="h-8 w-8 text-slate-500 hover:text-red-400 hover:bg-red-400/10"
-          >
-            <Trash2 className="h-4 w-4" />
-          </Button>
-        </CardFooter>
-      </Card>
+      <div className="h-full frosted-crystal iridescent-border rounded-3xl p-6 group cursor-default">
+        <div className="flex justify-between items-start mb-4">
+          <div className="space-y-1">
+            <h3 className="text-lg font-black text-white group-hover:text-white transition-colors line-clamp-1 italic tracking-tight uppercase">
+              {note.title}
+            </h3>
+            <p className="text-[9px] text-white/20 font-black uppercase tracking-[0.2em]">
+              {new Date(note.created_at).toLocaleDateString()}
+            </p>
+          </div>
+          <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              onClick={() => onEdit(note)}
+              className="h-8 w-8 rounded-xl text-white/40 hover:text-white hover:bg-white/10 transition-all"
+            >
+              <Pencil className="h-4 w-4" />
+            </Button>
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              onClick={() => onDelete(note.id)}
+              className="h-8 w-8 rounded-xl text-white/20 hover:text-rose-400 hover:bg-rose-400/10 transition-all"
+            >
+              <Trash2 className="h-4 w-4" />
+            </Button>
+          </div>
+        </div>
+        
+        <p className="text-white/60 text-sm line-clamp-4 leading-relaxed whitespace-pre-wrap font-medium">
+          {note.content}
+        </p>
+
+        {/* Subtle Bottom Accent */}
+        <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+      </div>
     </motion.div>
   )
 }

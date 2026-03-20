@@ -42,40 +42,50 @@ export function NoteEditor({ open, onOpenChange, onSave, initialData }: NoteEdit
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[525px] bg-slate-900 border-slate-800 text-white shadow-2xl">
-        <DialogHeader>
-          <DialogTitle className="text-2xl font-bold bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">
-            {initialData ? 'Edit Note' : 'Create New Note'}
+      <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto custom-scrollbar frosted-crystal iridescent-border text-white shadow-3xl p-8 rounded-[40px] border-white/20">
+        <DialogHeader className="mb-6">
+          <DialogTitle className="text-3xl font-black italic tracking-tighter uppercase text-white">
+            {initialData ? 'Memory Revision' : 'Memory Initialization'}
           </DialogTitle>
+          <p className="text-[10px] font-black text-white/20 uppercase tracking-[0.4em] mt-1">Authorized Data Input</p>
         </DialogHeader>
-        <div className="grid gap-6 py-4">
-          <div className="grid gap-2">
-            <Label htmlFor="title" className="text-slate-400 font-medium ml-1">Title</Label>
+        
+        <div className="grid gap-10 py-4">
+          <div className="grid gap-4">
+            <Label htmlFor="title" className="text-[10px] font-black uppercase tracking-widest text-orange-500/60 ml-2">Sector Label</Label>
             <Input
               id="title"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              placeholder="Give your note a title..."
-              className="bg-slate-950 border-slate-800 focus:border-indigo-500/50 focus:ring-indigo-500/20 text-white h-12 text-lg px-4 rounded-xl transition-all"
+              placeholder="Input designation..."
+              className="bg-white/5 border-white/10 focus:border-white/40 text-white h-14 text-xl px-6 rounded-2xl transition-all placeholder:text-white/5 font-medium tracking-tight"
             />
           </div>
-          <div className="grid gap-2">
-            <Label htmlFor="content" className="text-slate-400 font-medium ml-1">Content</Label>
+          <div className="grid gap-4">
+            <Label htmlFor="content" className="text-[10px] font-black uppercase tracking-widest text-orange-500/60 ml-2">Neural Content</Label>
             <Textarea
               id="content"
               value={content}
               onChange={(e) => setContent(e.target.value)}
-              placeholder="What's on your mind?"
-              className="min-h-[200px] bg-slate-950 border-slate-800 focus:border-indigo-500/50 focus:ring-indigo-500/20 text-white text-base p-4 rounded-xl resize-none transition-all leading-relaxed"
+              placeholder="What's on your mind?..."
+              className="min-h-[250px] bg-white/5 border-white/10 focus:border-white/40 text-white text-base p-6 rounded-3xl resize-none transition-all leading-relaxed placeholder:text-white/5 font-medium"
             />
           </div>
         </div>
-        <DialogFooter className="gap-2 sm:gap-0">
-          <Button variant="ghost" onClick={() => onOpenChange(false)} className="text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl">
-            Cancel
+
+        <DialogFooter className="mt-8 gap-4 sm:gap-0">
+          <Button 
+            variant="ghost" 
+            onClick={() => onOpenChange(false)} 
+            className="text-white/40 hover:text-white hover:bg-white/5 rounded-2xl font-black text-[10px] uppercase tracking-widest px-8"
+          >
+            Abort
           </Button>
-          <Button onClick={handleSave} className="bg-gradient-to-tr from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600 text-white font-bold px-8 rounded-xl shadow-lg shadow-indigo-500/20 transition-all active:scale-95">
-            Save Note
+          <Button 
+            onClick={handleSave} 
+            className="bg-rust text-white font-black text-[10px] uppercase tracking-[0.2em] px-10 h-12 rounded-2xl shadow-xl shadow-rust/20 transition-all hover:bg-rust/90 hover:scale-[1.02] active:scale-[0.98] border border-white/10"
+          >
+            PROCEED
           </Button>
         </DialogFooter>
       </DialogContent>

@@ -2,8 +2,9 @@
 
 import { createClient } from '@/utils/supabase/client'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Chrome } from 'lucide-react'
+import { Chrome, Sparkles } from 'lucide-react'
+import { AetherBackground } from '@/components/shared/aether-background'
+import { motion } from 'framer-motion'
 
 export default function LoginPage() {
   const supabase = createClient()
@@ -18,39 +19,42 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-indigo-950 via-slate-900 to-black p-4">
-      <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 pointer-events-none"></div>
+    <div className="relative min-h-screen w-full flex items-center justify-center overflow-hidden">
+      <AetherBackground />
       
-      <Card className="w-full max-w-md border-slate-800 bg-slate-900/50 backdrop-blur-xl shadow-2xl relative overflow-hidden">
-        <div className="absolute -top-24 -left-24 w-48 h-48 bg-indigo-500/20 rounded-full blur-3xl"></div>
-        <div className="absolute -bottom-24 -right-24 w-48 h-48 bg-purple-500/20 rounded-full blur-3xl"></div>
-        
-        <CardHeader className="text-center space-y-4">
-          <div className="mx-auto w-16 h-16 bg-gradient-to-tr from-indigo-500 to-purple-500 rounded-2xl flex items-center justify-center shadow-lg shadow-indigo-500/20 mb-2">
-            <span className="text-3xl font-bold text-white italic">A</span>
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="relative z-10 w-full max-w-md px-6"
+      >
+        <div className="frosted-crystal iridescent-border rounded-[2.5rem] p-12 text-center shadow-2xl">
+          <div className="mx-auto w-20 h-20 bg-white/5 rounded-3xl flex items-center justify-center mb-10 border border-white/10 shadow-inner group transition-all hover:bg-white/10">
+            <span className="text-4xl font-black text-white italic tracking-tighter uppercase text-glow">A</span>
           </div>
-          <CardTitle className="text-4xl font-extrabold tracking-tight text-white">
-            AI HUB
-          </CardTitle>
-          <CardDescription className="text-slate-400 text-lg">
-            Your all-in-one AI productivity suite
-          </CardDescription>
-        </CardHeader>
-        
-        <CardContent className="space-y-6 pt-4 pb-8">
+          
+          <div className="space-y-4 mb-12">
+            <h2 className="text-4xl font-black text-white italic tracking-tight uppercase">
+              Aether <span className="text-white/20">OS</span>
+            </h2>
+            <p className="text-[10px] font-black text-white/20 uppercase tracking-[0.4em]">
+              Initialize Neural Session
+            </p>
+          </div>
+          
           <Button 
             onClick={handleLogin}
-            className="w-full h-14 bg-white hover:bg-slate-100 text-black font-semibold text-lg transition-all duration-300 hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-3 rounded-xl shadow-xl shadow-white/5"
+            className="w-full h-16 bg-rust text-white font-black text-xs uppercase tracking-[0.2em] transition-all hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-4 rounded-2xl shadow-xl shadow-rust/20 group border border-white/10"
           >
-            <Chrome className="w-6 h-6" />
-            Continue with Google
+            <Chrome className="w-5 h-5 transition-transform group-hover:rotate-12" />
+            Sign In with Google
           </Button>
           
-          <div className="text-center text-sm text-slate-500">
-            Secure authentication powered by Supabase Auth
+          <div className="mt-12 flex items-center justify-center gap-2 opacity-20 group cursor-default">
+            <Sparkles size={12} className="text-white" />
+            <span className="text-[8px] font-black uppercase tracking-[0.3em]">Neural Encryption Active</span>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </motion.div>
     </div>
   )
 }

@@ -1,14 +1,17 @@
 import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
-import { AetherLanding } from '@/components/landing/landing-page'
 
-export default async function Index() {
+export default async function DashboardLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
 
-  if (user) {
-    return redirect('/dashboard')
+  if (!user) {
+    redirect('/login')
   }
 
-  return <AetherLanding />
+  return <>{children}</>
 }
