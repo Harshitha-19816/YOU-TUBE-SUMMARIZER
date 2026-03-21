@@ -6,8 +6,10 @@ import {
   History, 
   Command as CommandIcon,
   User,
-  Zap
+  Zap,
+  ShieldAlert
 } from 'lucide-react'
+import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Toaster } from 'sonner'
@@ -21,8 +23,9 @@ import { useRouter } from 'next/navigation'
 import { NotesPanel } from '@/components/workspace/notes-panel'
 import { YouTubePanel } from '@/components/workspace/youtube-panel'
 import { JobsPanel } from '@/components/workspace/jobs-panel'
+import { ResearchPanel } from '@/components/workspace/research-panel'
 
-type ActiveView = 'none' | 'notes' | 'youtube' | 'jobs'
+type ActiveView = 'none' | 'notes' | 'youtube' | 'jobs' | 'research'
 
 interface Activity {
   type: string
@@ -70,6 +73,9 @@ export default function WorkspacePage() {
     } else if (cmd.includes('job') || cmd.includes('hire')) {
       setActiveTab('jobs')
       logActivity('Market', 'Requested Job Workspace')
+    } else if (cmd.includes('search') || cmd.includes('research')) {
+      setActiveTab('research')
+      logActivity('Research', 'Requested Deep Research')
     }
     setCommand('')
   }
@@ -78,6 +84,7 @@ export default function WorkspacePage() {
     { id: 'notes', icon: '📝', label: 'Neural Mind', active: activeTab === 'notes', onClick: () => setActiveTab('notes') },
     { id: 'youtube', icon: '📺', label: 'Visual Intel', active: activeTab === 'youtube', onClick: () => setActiveTab('youtube') },
     { id: 'jobs', icon: '💼', label: 'Market Ops', active: activeTab === 'jobs', onClick: () => setActiveTab('jobs') },
+    { id: 'research', icon: '🔍', label: 'Research', active: activeTab === 'research', onClick: () => setActiveTab('research') },
     { id: 'none', icon: '🏠', label: 'Central', active: activeTab === 'none', onClick: () => setActiveTab('none') },
   ]
 
@@ -101,8 +108,12 @@ export default function WorkspacePage() {
           </div>
           
           <div className="flex items-center gap-2 sm:gap-4">
+             <Link href="/admin" className="flex items-center gap-2 px-3 sm:px-4 py-2 frosted-crystal rounded-full border-red-500/20 hover:bg-red-500/10 transition-colors cursor-pointer group">
+                <ShieldAlert size={14} className="text-red-500 group-hover:shadow-[0_0_8px_rgba(239,68,68,0.8)]" />
+                <span className="text-[8px] sm:text-[10px] font-black text-white/40 uppercase tracking-widest hidden sm:inline group-hover:text-red-400 transition-colors">Admin Node</span>
+             </Link>
              <div className="flex items-center gap-2 px-3 sm:px-4 py-2 frosted-crystal rounded-full border-white/5">
-                <User size={14} className="text-orange-500" />
+                <User size={14} className="text-emerald-500" />
                 <span className="text-[8px] sm:text-[10px] font-black text-emerald-400/60 uppercase tracking-widest hidden sm:inline">Intelligence Node</span>
              </div>
              <LogoutButton />
@@ -171,6 +182,7 @@ export default function WorkspacePage() {
                 {activeTab === 'notes' && <NotesPanel logActivity={logActivity} />}
                 {activeTab === 'youtube' && <YouTubePanel logActivity={logActivity} />}
                 {activeTab === 'jobs' && <JobsPanel logActivity={logActivity} />}
+                {activeTab === 'research' && <ResearchPanel logActivity={logActivity} />}
               </div>
             </motion.div>
           )}

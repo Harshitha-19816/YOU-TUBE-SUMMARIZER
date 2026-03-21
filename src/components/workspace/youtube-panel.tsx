@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Youtube, Search, Loader2, ListChecks, Info, Lightbulb, Copy, Check, Sparkles } from 'lucide-react'
+import { Youtube, Search, Loader2, ListChecks, Info, Lightbulb, Copy, Check, Sparkles, Save } from 'lucide-react'
 import { toast } from 'sonner'
 import { motion, AnimatePresence } from 'framer-motion'
 
@@ -19,6 +19,40 @@ export function YouTubePanel({ logActivity }: { logActivity: (type: string, msg:
   const [loading, setLoading] = useState(false)
   const [summary, setSummary] = useState<Summary | null>(null)
   const [copied, setCopied] = useState(false)
+  const [saving, setSaving] = useState(false)
+
+  const saveToNotes = async () => {
+    if (!summary) return
+    setSaving(true)
+    try {
+      const text = `
+Explanation: ${summary.explanation}
+
+Key Points:
+${summary.key_points.map(p => `- ${p}`).join('\n')}
+
+Detailed Summary:
+${summary.bullet_summary.map(p => `- ${p}`).join('\n')}
+      `.trim()
+      
+      const res = await fetch('/api/notes', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title: `Video Intel Extracted`, content: text }),
+      })
+      
+      if (res.ok) {
+        toast.success('Saved to Notes!')
+        logActivity('Scanner', 'Summary archived to Notes')
+      } else {
+        toast.error('Failed to save note')
+      }
+    } catch (err) {
+      toast.error('An error occurred while saving')
+    } finally {
+      setSaving(false)
+    }
+  }
 
   const handleSummarize = async () => {
     if (!url.trim()) return
@@ -79,15 +113,27 @@ ${summary.bullet_summary.map(p => `- ${p}`).join('\n')}
         </div>
 
         {summary && (
-          <Button 
-            variant="ghost" 
-            size="sm" 
-            onClick={copyToClipboard}
-            className="text-white/40 hover:text-white hover:bg-white/5 gap-2 rounded-2xl font-black text-[10px] uppercase tracking-widest px-4 h-10 border border-white/5"
-          >
-            {copied ? <Check size={14} className="text-emerald-400" /> : <Copy size={16} />}
-            {copied ? 'Captured' : 'Extract Data'}
-          </Button>
+          <div className="flex items-center gap-2">
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              onClick={saveToNotes}
+              disabled={saving}
+              className="text-white/40 hover:text-white hover:bg-white/5 gap-2 rounded-2xl font-black text-[10px] uppercase tracking-widest px-4 h-10 border border-white/5"
+            >
+              {saving ? <Loader2 size={14} className="animate-spin" /> : <Save size={16} />}
+              Save Note
+            </Button>
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              onClick={copyToClipboard}
+              className="text-white/40 hover:text-white hover:bg-white/5 gap-2 rounded-2xl font-black text-[10px] uppercase tracking-widest px-4 h-10 border border-white/5"
+            >
+              {copied ? <Check size={14} className="text-emerald-400" /> : <Copy size={16} />}
+              {copied ? 'Captured' : 'Extract Data'}
+            </Button>
+          </div>
         )}
       </div>
 
