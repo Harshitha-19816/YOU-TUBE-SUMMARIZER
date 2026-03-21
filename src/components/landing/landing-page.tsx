@@ -34,7 +34,7 @@ export function AetherLanding() {
           transition={{ duration: 1, delay: 0.2 }}
           className="text-6xl md:text-8xl font-black text-white italic tracking-tighter leading-[0.9] mb-8 text-glow"
         >
-          AETHER <span className="text-white/20">OS</span>
+          NEXUS <span className="text-white/20">AI</span>
         </motion.h1>
 
         {/* Sub-headline */}

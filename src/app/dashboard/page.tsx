@@ -97,13 +97,13 @@ export default function WorkspacePage() {
             >
               <span className="text-xl font-black italic text-glow text-white">A</span>
             </button>
-            <h1 className="text-sm font-black tracking-[0.3em] text-white/40 hidden md:block uppercase">Aether OS</h1>
+            <h1 className="text-sm font-black tracking-[0.3em] text-white/40 hidden md:block uppercase">Nexus AI</h1>
           </div>
           
           <div className="flex items-center gap-2 sm:gap-4">
              <div className="flex items-center gap-2 px-3 sm:px-4 py-2 frosted-crystal rounded-full border-white/5">
                 <User size={14} className="text-orange-500" />
-                <span className="text-[8px] sm:text-[10px] font-black text-orange-400/60 uppercase tracking-widest hidden sm:inline">Desert Node</span>
+                <span className="text-[8px] sm:text-[10px] font-black text-emerald-400/60 uppercase tracking-widest hidden sm:inline">Intelligence Node</span>
              </div>
              <LogoutButton />
           </div>
@@ -149,7 +149,7 @@ export default function WorkspacePage() {
                   className="w-16 h-1 bg-white/10 mx-auto rounded-full"
                 />
                 <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tighter uppercase italic leading-none">
-                  Luminous <span className="text-white/20">Depth</span>
+                  NEXUS <span className="text-white/20">AI</span>
                 </h2>
                 <p className="text-slate-500 text-sm sm:text-lg font-medium max-w-md mx-auto leading-relaxed">
                   Your cognitive workspace, materializing at the edge of intelligence.

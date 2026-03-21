@@ -37,7 +37,7 @@ export default function LoginPage() {
           
           <div className="space-y-4 mb-12">
             <h2 className="text-4xl font-black text-white italic tracking-tight uppercase">
-              Aether <span className="text-white/20">OS</span>
+              Nexus <span className="text-white/20">AI</span>
             </h2>
             <p className="text-[10px] font-black text-white/20 uppercase tracking-[0.4em]">
               Initialize Neural Session

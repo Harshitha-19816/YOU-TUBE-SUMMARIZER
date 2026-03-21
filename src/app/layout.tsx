@@ -5,8 +5,8 @@ import "./globals.css";
 const interTight = Inter_Tight({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Aether OS [Desert]",
-  description: "Desert Aether AI Workspace",
+  title: "Nexus AI Workspace",
+  description: "Your Intelligent AI Hub",
 };
 
 export default function RootLayout({
