@@ -41,13 +41,33 @@ export async function POST(request: NextRequest) {
     videoId = videoId.split('?')[0].split('&')[0].replace(/\/$/, '')
     
     console.log('Extracted Video ID:', videoId)
-    const transcriptItems = await YoutubeTranscript.fetchTranscript(videoId)
-    const fullText = transcriptItems.map(item => item.text).join(' ')
+    let fullText = ''
+    try {
+      const transcriptItems = await YoutubeTranscript.fetchTranscript(videoId)
+      fullText = transcriptItems.map(item => item.text).join(' ')
+    } catch (transcriptError) {
+      console.warn('Transcript extraction failed/blocked. Falling back to Firecrawl metadata scrape...', transcriptError)
+      // Fallback: Use Firecrawl to violently scrape the YouTube page title and description
+      const FirecrawlApp = (await import('@mendable/firecrawl-js')).default
+      const firecrawl = new FirecrawlApp({ apiKey: process.env.FIRECRAWL_API_KEY })
+      
+      const scrapeResponse = await firecrawl.scrape(`https://www.youtube.com/watch?v=${videoId}`, {
+        formats: ['markdown']
+      })
+      
+      if (!scrapeResponse || !scrapeResponse.markdown) {
+        throw new Error('Both Transcript and Fallback Web Scraper failed. Please try a different video.')
+      }
+      
+      fullText = scrapeResponse.markdown || 'No detailed content found, but the video was verified.'
+      // Prepend a disclaimer to the context so the AI knows it's working off metadata, not a full transcript
+      fullText = `[NOTICE: Full transcript was disabled. Summarizing based on scraped metadata, title, and description instead:]\n\n` + fullText
+    }
     
-    // Limit transcript size to avoid token limits (approx 10k chars for safety)
+    // Limit transcript/metadata size to avoid token limits (approx 10k chars for safety)
     const truncatedText = fullText.substring(0, 10000)
 
-    console.log('Transcript length:', truncatedText.length)
+    console.log('Final Extraction length:', truncatedText.length)
 
     // 2. Send to OpenRouter
     const response = await axios.post(
@@ -57,11 +77,11 @@ export async function POST(request: NextRequest) {
         messages: [
           {
             role: 'system',
-            content: 'You are an expert video summarizer. Provide a detailed summary of the following YouTube video transcript. Format your response strictly as a JSON object with the following keys: "explanation" (a short paragraph), "key_points" (an array of 3-5 major takeaways), and "bullet_summary" (a detailed list of points). Respond ONLY with the JSON.'
+            content: 'You are an expert video summarizer. Provide a detailed summary of the following YouTube video content or metadata. Format your response strictly as a JSON object with the following keys: "explanation" (a short paragraph), "key_points" (an array of 3-5 major takeaways), and "bullet_summary" (a detailed list of points). Respond ONLY with the JSON.'
           },
           {
             role: 'user',
-            content: `Transcript: ${truncatedText}`
+            content: `Video Content/Transcript: ${truncatedText}`
           }
         ]
       },
