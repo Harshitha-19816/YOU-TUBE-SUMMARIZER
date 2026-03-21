@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server'
 import FirecrawlApp from '@mendable/firecrawl-js'
 import { createClient } from '@/utils/supabase/server'
 
+export const maxDuration = 60;
+
 // Initialize Firecrawl
 const firecrawl = new FirecrawlApp({ apiKey: process.env.FIRECRAWL_API_KEY })
 
